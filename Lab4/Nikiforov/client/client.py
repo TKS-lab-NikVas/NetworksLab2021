@@ -8,7 +8,7 @@ from prettytable import PrettyTable
 class Client:
 
     def __init__(self):
-        self.address = 'http://192.168.137.96:8080/'
+        self.address = 'http://localhost:8080/'
         self.session = requests.Session()
         self.username = ""
         self.password = ""

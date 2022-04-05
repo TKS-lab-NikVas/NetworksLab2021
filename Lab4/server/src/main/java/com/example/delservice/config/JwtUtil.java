@@ -1,12 +1,15 @@
 package com.example.delservice.config;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.example.delservice.controller.OrderController;
+import io.jsonwebtoken.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -22,6 +25,9 @@ public class JwtUtil {
 
     @Value("${jwt.sessionTime}")
     private long sessionTime;
+
+    private static final Logger logger = LogManager.getLogger(JwtUtil.class);
+
 
     // генерация токена (кладем в него имя пользователя и authorities)
     public String generateToken(UserDetails userDetails) {
@@ -52,7 +58,8 @@ public class JwtUtil {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
-    private String createToken(Map<String, Object> claims, String subject){
+
+    private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder().setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))

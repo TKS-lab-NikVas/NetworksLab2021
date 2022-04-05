@@ -80,7 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    // Бин AuthenticationManager используется в контроллере аутентификации (см. выше)
+    // Бин AuthenticationManager используется в контроллере аутентификации
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();

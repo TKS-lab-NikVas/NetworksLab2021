@@ -61,7 +61,6 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     public AuthResponse login(@RequestBody AuthRequest authRequest) {
         Authentication authentication;
-        System.out.println("asdsadas");
 
         try {
             authentication = authenticationManager.authenticate(

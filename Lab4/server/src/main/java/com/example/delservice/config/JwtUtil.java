@@ -40,7 +40,9 @@ public class JwtUtil {
     }
 
     //извлечение имени пользователя из токена (внутри валидация токена)
-    public String extractUsername(String token) {
+    public String extractUsername(String token) throws ExpiredJwtException,
+            SignatureException,
+            MalformedJwtException {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -49,12 +51,16 @@ public class JwtUtil {
         return extractClaim(token, claims -> (String) claims.get("authorities"));
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) throws ExpiredJwtException,
+            SignatureException,
+            MalformedJwtException {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
+    private Claims extractAllClaims(String token) throws ExpiredJwtException,
+            SignatureException,
+            MalformedJwtException {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 

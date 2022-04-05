@@ -53,8 +53,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             } catch (MalformedJwtException malformedJwtException) {
                 logger.error("The signature is incorrect (not parsed)", malformedJwtException);
             }
+            if (username == null) {
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                response.getWriter().write("The token is not valid");
+                return;
+            }
         }
-
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             String commaSeparatedListOfAuthorities = jwtUtil.extractAuthorities(jwt);
             List<GrantedAuthority> authorities =
@@ -63,9 +67,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     username, null, authorities);
 
             SecurityContextHolder.getContext().setAuthentication(upaat);
-        }
-        else {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
         }
         filterChain.doFilter(request, response);
     }

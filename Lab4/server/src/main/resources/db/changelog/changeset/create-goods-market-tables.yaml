@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-goods-market-tables
+      author: Roman Vassilyev
+      changes:
+        - createTable:
+            tableName: goods
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: market
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: geo_area
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: market_goods
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: goods_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: goods_id_fk
+                    referencedTableName: goods
+                    referencedColumnNames: id
+              - column:
+                  name: market_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: market_id_fk
+                    referencedTableName: market
+                    referencedColumnNames: id
+

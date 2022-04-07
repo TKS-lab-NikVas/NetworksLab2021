@@ -1,0 +1,5 @@
+databaseChangeLog: # Liquibase uses the DATABASECHANGELOG table to track which changesets have been run.
+  - include: # тег для changesets расположенных в других файлах
+      file: db/changelog/changeset/create-goods-market-tables.yaml # путь к файлу миграции
+  #- include:
+   #   file: db/changelog/changeset/create-user-role-tables.yaml

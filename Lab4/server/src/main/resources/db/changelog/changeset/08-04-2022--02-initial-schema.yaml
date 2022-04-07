@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-goods-market-tables
+      id: create-user-role-tables
       author: Roman Vassilyev
       changes:
         - createTable:
-            tableName: goods
+            tableName: u_type
             columns:
               - column:
                   name: id
@@ -19,7 +19,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - createTable:
-            tableName: market
+            tableName: t_user
             columns:
               - column:
                   name: id
@@ -29,37 +29,34 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: geo_area
-                  type: integer
+                  name: username
+                  type: varchar(255)
                   constraints:
                     nullable: false
+                    unique: true
               - column:
-                  name: name
+                  name: password
                   type: varchar(255)
                   constraints:
                     nullable: false
         - createTable:
-            tableName: market_goods
+            tableName: t_user_user_roles
             columns:
               - column:
-                  name: id
+                  name: user_id
                   type: bigint
-                  autoIncrement: true
                   constraints:
                     primaryKey: true
-                    nullable: false
-              - column:
-                  name: goods_id
-                  type: bigint
-                  constraints:
-                    foreignKeyName: goods_id_fk
-                    referencedTableName: goods
+                    primaryKeyName: user_role_pk
+                    foreignKeyName: user_id_fk
+                    referencedTableName: t_user
                     referencedColumnNames: id
               - column:
-                  name: market_id
+                  name: user_roles_id
                   type: bigint
                   constraints:
-                    foreignKeyName: market_id_fk
-                    referencedTableName: market
+                    primaryKey: true
+                    primaryKeyName: user_role_pk
+                    foreignKeyName: user_roles_id_fk
+                    referencedTableName: u_type
                     referencedColumnNames: id
-

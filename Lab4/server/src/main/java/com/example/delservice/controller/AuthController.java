@@ -2,9 +2,13 @@ package com.example.delservice.controller;
 
 import com.example.delservice.config.AuthRequest;
 import com.example.delservice.config.AuthResponse;
-import com.example.delservice.config.JwtUtil;
+import com.example.delservice.config.jwt.Exception.TokenRefreshException;
+import com.example.delservice.config.jwt.JwtUtil;
+import com.example.delservice.config.jwt.TokenRefreshRequest;
+import com.example.delservice.config.jwt.TokenRefreshResponse;
+import com.example.delservice.model.RefreshToken;
 import com.example.delservice.model.User;
-import com.example.delservice.repository.UserRepository;
+import com.example.delservice.service.RefreshTokenService;
 import com.example.delservice.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -14,7 +18,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -30,6 +33,9 @@ public class AuthController {
 
     @Autowired
     private JwtUtil jwtTokenUtil;
+
+    @Autowired
+    private RefreshTokenService refreshTokenService;
 
 
     @ApiOperation(
@@ -75,12 +81,19 @@ public class AuthController {
         return new AuthResponse(jwt);
     }
 
-       /* Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    @PostMapping("/refreshtoken")
+    public TokenRefreshResponse refreshToken(@RequestBody TokenRefreshRequest request) {
+        String requestRefreshToken = request.getRefreshToken();
 
-        boolean hasUserRole = authentication.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals("ROLE_SELLER"));
-
-        throw new ResponseStatusException(HttpStatus.OK, String.valueOf(hasUserRole));*/
-
+        return refreshTokenService.findByToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(user -> {
+                    String jwt = jwtTokenUtil.generateToken(user);
+                    return new TokenRefreshResponse(requestRefreshToken, jwt);
+                })
+                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+                        "Refresh token is not in database"));
+    }
 
 }

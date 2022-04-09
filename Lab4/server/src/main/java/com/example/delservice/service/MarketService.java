@@ -8,5 +8,5 @@ public interface MarketService {
 
     OrderPriceDTO calculateTheOrder(OrderDTO orderDTO);
 
-    public boolean addNewMarket(MarketDTO marketDTO);
+    boolean addNewMarket(MarketDTO marketDTO);
 }

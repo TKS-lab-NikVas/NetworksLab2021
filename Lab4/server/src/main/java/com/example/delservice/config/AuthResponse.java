@@ -4,8 +4,11 @@ public class AuthResponse {
 
     private String jwtToken;
 
-    public AuthResponse(String jwtToken) {
+    private String refreshToken;
+
+    public AuthResponse(String jwtToken, String refreshToken) {
         this.jwtToken = jwtToken;
+        this.refreshToken = refreshToken;
     }
 
     public String getJwtToken() {
@@ -14,5 +17,13 @@ public class AuthResponse {
 
     public void setJwtToken(String jwtToken) {
         this.jwtToken = jwtToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

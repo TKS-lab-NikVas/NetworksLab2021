@@ -5,7 +5,6 @@ import com.example.delservice.config.AuthResponse;
 import com.example.delservice.config.jwt.Exception.TokenRefreshException;
 import com.example.delservice.config.jwt.JwtUtil;
 import com.example.delservice.config.jwt.TokenRefreshRequest;
-import com.example.delservice.config.jwt.TokenRefreshResponse;
 import com.example.delservice.model.RefreshToken;
 import com.example.delservice.model.User;
 import com.example.delservice.service.RefreshTokenService;
@@ -77,12 +76,13 @@ public class AuthController {
         }
         // при создании токена в него кладется username как Subject claim и список authorities как кастомный claim
         String jwt = jwtTokenUtil.generateToken((UserDetails) authentication.getPrincipal());
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequest.getName());
 
-        return new AuthResponse(jwt);
+        return new AuthResponse(jwt, refreshToken.getToken());
     }
 
     @PostMapping("/refreshtoken")
-    public TokenRefreshResponse refreshToken(@RequestBody TokenRefreshRequest request) {
+    public AuthResponse refreshToken(@RequestBody TokenRefreshRequest request) {
         String requestRefreshToken = request.getRefreshToken();
 
         return refreshTokenService.findByToken(requestRefreshToken)
@@ -90,7 +90,7 @@ public class AuthController {
                 .map(RefreshToken::getUser)
                 .map(user -> {
                     String jwt = jwtTokenUtil.generateToken(user);
-                    return new TokenRefreshResponse(requestRefreshToken, jwt);
+                    return new AuthResponse(jwt, requestRefreshToken);
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
                         "Refresh token is not in database"));

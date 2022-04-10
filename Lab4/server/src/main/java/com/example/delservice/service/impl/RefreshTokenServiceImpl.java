@@ -2,17 +2,20 @@ package com.example.delservice.service.impl;
 
 import com.example.delservice.config.jwt.Exception.TokenRefreshException;
 import com.example.delservice.model.RefreshToken;
+import com.example.delservice.model.User;
 import com.example.delservice.repository.RefreshTokenRepository;
 import com.example.delservice.repository.UserRepository;
 import com.example.delservice.service.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Value("${jwt.refresh_token_duration}")
@@ -31,9 +34,14 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
-    public RefreshToken createRefreshToken(Long userId) {
+    @Transactional
+    public RefreshToken createRefreshToken(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent() && refreshTokenRepository.findByUser(user.get()).isPresent()) {
+            refreshTokenRepository.deleteByUser(user.get());
+        }
         RefreshToken refreshToken = new RefreshToken();
-        refreshToken.setUser(userRepository.findById(userId).get());
+        refreshToken.setUser(user.get());
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
         refreshToken = refreshTokenRepository.save(refreshToken);

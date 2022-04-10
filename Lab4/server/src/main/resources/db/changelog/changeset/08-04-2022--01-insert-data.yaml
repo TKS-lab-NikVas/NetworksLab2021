@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-data-into-goods-market
+      author: Roman Vassilyev
+      changes:
+        - insert:
+            tableName: goods
+            columns:
+              - column:
+                  name: name
+                  value: Beef
+        - insert:
+            tableName: goods
+            columns:
+              - column:
+                  name: name
+                  value: Eggs
+        - insert:
+            tableName: goods
+            columns:
+              - column:
+                  name: name
+                  value: Bread
+        - insert:
+            tableName: market
+            columns:
+              - column:
+                  name: name
+                  value: Perekrestok
+              - column:
+                  name: geo_area
+                  valueNumeric: 2
+        - insert:
+            tableName: market
+            columns:
+              - column:
+                  name: name
+                  value: SPAR
+              - column:
+                  name: geo_area
+                  valueNumeric: 3
+        - insert:
+            tableName: market
+            columns:
+              - column:
+                  name: name
+                  value: Magnit
+              - column:
+                  name: geo_area
+                  valueNumeric: 1

@@ -1,0 +1,9 @@
+databaseChangeLog: # Liquibase uses the DATABASECHANGELOG table to track which changesets have been run.
+  - include: # тег для changesets расположенных в других файлах
+      file: db/changelog/changeset/08-04-2022--01-initial-schema.yaml # путь к файлу миграции
+  - include:
+      file: db/changelog/changeset/08-04-2022--02-initial-schema.yaml
+  - include:
+      file: db/changelog/changeset/08-04-2022--01-insert-data.yaml
+  - include:
+      file: db/changelog/changeset/08-04-2022--02-insert-data.yaml

@@ -1,0 +1,62 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user-role-tables
+      author: Roman Vassilyev
+      changes:
+        - createTable:
+            tableName: u_type
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: t_user
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: t_user_user_roles
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: user_role_pk
+                    foreignKeyName: user_id_fk
+                    referencedTableName: t_user
+                    referencedColumnNames: id
+              - column:
+                  name: user_roles_id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: user_role_pk
+                    foreignKeyName: user_roles_id_fk
+                    referencedTableName: u_type
+                    referencedColumnNames: id

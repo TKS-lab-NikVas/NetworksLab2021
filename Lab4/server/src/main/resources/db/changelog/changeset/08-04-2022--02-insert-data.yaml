@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-data-into-user-role
+      author: Roman Vassilyev
+      changes:
+        - insert:
+            tableName: u_type
+            columns:
+              - column:
+                  name: name
+                  value: ROLE_USER
+        - insert:
+            tableName: u_type
+            columns:
+              - column:
+                  name: name
+                  value: ROLE_ADMIN
+        - insert:
+            tableName: u_type
+            columns:
+              - column:
+                  name: name
+                  value: ROLE_SELLER

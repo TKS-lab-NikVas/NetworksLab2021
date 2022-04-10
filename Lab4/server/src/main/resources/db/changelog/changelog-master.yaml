@@ -7,3 +7,5 @@ databaseChangeLog: # Liquibase uses the DATABASECHANGELOG table to track which c
       file: db/changelog/changeset/08-04-2022--01-insert-data.yaml
   - include:
       file: db/changelog/changeset/08-04-2022--02-insert-data.yaml
+  - include:
+      file: db/changelog/changeset/10-04-2022--01-add-refreshtoken-table.yaml

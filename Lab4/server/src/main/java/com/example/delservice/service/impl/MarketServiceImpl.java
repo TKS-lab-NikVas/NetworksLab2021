@@ -55,7 +55,7 @@ public class MarketServiceImpl implements MarketService {
 
         orderPriceDTO.setOrderPrice(price);
 
-        int deliveryPrice = 0;
+        int deliveryPrice;
         if (orderDTO.getUserArea().equals(market.getGeoArea())) {
             deliveryPrice = 1000;
         } else {

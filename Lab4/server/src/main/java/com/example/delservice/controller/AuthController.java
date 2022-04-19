@@ -62,7 +62,7 @@ public class AuthController {
                     "true = если у пользователя права ROLE_SELLER, " +
                     "false если права обычного пользователя"
     )
-    @GetMapping("/login")
+    @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public AuthResponse login(@RequestBody AuthRequest authRequest) {
         Authentication authentication;

@@ -1,5 +1,6 @@
 Лабораторные работы по дисциплине "Технологии компьютерных сетей"
-3530901/80203 - Никифоров Т.А. и Васильев Р.В.
+3530901/80203 - [Никифоров Т.А.](https://github.com/nikiforovta) и [Васильев Р.В.](https://github.com/killawetz)
+
 
 1. Lab 1 - Chat (java server, python client)
 2. Lab 2 - DNS client (python), SNTP server (java)

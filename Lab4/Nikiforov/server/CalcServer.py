@@ -77,6 +77,7 @@ def slow_operation(operation):
 
 def slow_fact(operation_id, args):
     sleep(len(args) * 2)
+    args = list(map(int, args))
     try:
         results.append(
             {"id": operation_id, "success": True, "result": list(map(lambda x: math.factorial(x), args))})
